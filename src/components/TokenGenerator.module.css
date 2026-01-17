@@ -1,0 +1,538 @@
+/* Container */
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background Grid */
+.bgGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+}
+
+/* Floating Orbs */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+  animation: float 8s ease-in-out infinite;
+}
+
+.orb1 {
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+  top: -100px;
+  right: -100px;
+  animation-delay: 0s;
+}
+
+.orb2 {
+  width: 350px;
+  height: 350px;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  bottom: -80px;
+  left: -80px;
+  animation-delay: -4s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -30px) scale(1.05); }
+}
+
+/* Card */
+.card {
+  position: relative;
+  width: 100%;
+  max-width: 580px;
+  background: var(--bg-card);
+  backdrop-filter: blur(40px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.05) inset,
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    0 0 100px rgba(168, 85, 247, 0.1);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent, rgba(168,85,247,0.2));
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.iconWrapper {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 0.75rem;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 30px rgba(0, 245, 255, 0.3);
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 30px rgba(0, 245, 255, 0.3); }
+  50% { box-shadow: 0 0 50px rgba(0, 245, 255, 0.5), 0 0 80px rgba(168, 85, 247, 0.3); }
+}
+
+.iconWrapper svg {
+  width: 28px;
+  height: 28px;
+  color: white;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+  font-weight: 300;
+}
+
+/* Section Label */
+.sectionLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+/* Category Tabs */
+.categoryTabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.categoryTab {
+  padding: 0.4rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid var(--glass-border);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Outfit', sans-serif;
+}
+
+.categoryTab:hover {
+  border-color: rgba(168, 85, 247, 0.3);
+  color: var(--text-primary);
+}
+
+.categoryTab.active {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2));
+  border-color: rgba(168, 85, 247, 0.4);
+  color: var(--text-primary);
+}
+
+/* Type Grid */
+.typeGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 1.25rem;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.typeGrid::-webkit-scrollbar {
+  width: 4px;
+}
+
+.typeGrid::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+  border-radius: 2px;
+}
+
+.typeGrid::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.3);
+  border-radius: 2px;
+}
+
+.typeOption {
+  padding: 0.7rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  background: var(--bg-input);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.typeOption:hover {
+  border-color: rgba(0, 245, 255, 0.3);
+  background: rgba(0, 245, 255, 0.05);
+}
+
+.typeOption.selected {
+  border-color: var(--accent-cyan);
+  background: rgba(0, 245, 255, 0.1);
+  box-shadow: 0 0 20px rgba(0, 245, 255, 0.1);
+}
+
+.typeName {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.typeDesc {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.typeOption.selected .typeName {
+  color: var(--accent-cyan);
+}
+
+/* Selected Info */
+.selectedInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background: rgba(168, 85, 247, 0.1);
+  border-radius: 8px;
+}
+
+.selectedBadge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent-purple);
+}
+
+.selectedDesc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Token Display */
+.tokenDisplay {
+  position: relative;
+  background: var(--bg-input);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.tokenDisplay.hasToken {
+  border-color: rgba(0, 245, 255, 0.2);
+  box-shadow: 0 0 40px rgba(0, 245, 255, 0.05) inset;
+}
+
+.tokenText {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--accent-cyan);
+  word-break: break-all;
+  line-height: 1.5;
+  text-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.placeholder {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 300;
+}
+
+/* Generating Animation */
+.generating {
+  display: flex;
+  gap: 6px;
+}
+
+.generating span {
+  width: 8px;
+  height: 8px;
+  background: var(--accent-cyan);
+  border-radius: 50%;
+  animation: bounce 0.6s ease-in-out infinite;
+}
+
+.generating span:nth-child(2) { animation-delay: 0.1s; }
+.generating span:nth-child(3) { animation-delay: 0.2s; }
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(-8px); opacity: 1; }
+}
+
+/* Buttons */
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btnGenerate,
+.btnCopy {
+  flex: 1;
+  padding: 0.9rem 1.25rem;
+  border-radius: 12px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btnGenerate svg,
+.btnCopy svg {
+  width: 18px;
+  height: 18px;
+}
+
+.btnGenerate {
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+  color: white;
+  box-shadow: 0 4px 20px rgba(168, 85, 247, 0.4);
+}
+
+.btnGenerate:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(168, 85, 247, 0.5);
+}
+
+.btnGenerate:active {
+  transform: translateY(0);
+}
+
+.btnCopy {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+}
+
+.btnCopy:not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(0, 245, 255, 0.3);
+  color: var(--accent-cyan);
+  transform: translateY(-2px);
+}
+
+.btnCopy:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btnCopy.copied {
+  background: rgba(0, 245, 255, 0.1);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+.btnCopy.error {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+/* Responsive - Tablet */
+@media (max-width: 768px) {
+  .card {
+    padding: 1.5rem;
+    border-radius: 20px;
+  }
+
+  .orb1 {
+    width: 300px;
+    height: 300px;
+  }
+
+  .orb2 {
+    width: 250px;
+    height: 250px;
+  }
+
+  .title {
+    font-size: 1.35rem;
+  }
+
+  .buttons {
+    flex-direction: column;
+  }
+
+  .btnGenerate,
+  .btnCopy {
+    width: 100%;
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 480px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .card {
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+
+  .iconWrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+  }
+
+  .iconWrapper svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .title {
+    font-size: 1.2rem;
+  }
+
+  .subtitle {
+    font-size: 0.8rem;
+  }
+
+  .sectionLabel {
+    font-size: 0.7rem;
+  }
+
+  .categoryTabs {
+    gap: 4px;
+  }
+
+  .categoryTab {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  .typeGrid {
+    grid-template-columns: 1fr;
+    max-height: 180px;
+  }
+
+  .typeOption {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .typeName {
+    font-size: 0.85rem;
+  }
+
+  .typeDesc {
+    font-size: 0.65rem;
+  }
+
+  .selectedInfo {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .tokenDisplay {
+    min-height: 70px;
+    padding: 0.75rem;
+  }
+
+  .tokenText {
+    font-size: 0.75rem;
+  }
+
+  .placeholder {
+    font-size: 0.8rem;
+  }
+
+  .btnGenerate,
+  .btnCopy {
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .orb1,
+  .orb2 {
+    display: none;
+  }
+}
+
+/* Focus styles for accessibility */
+.categoryTab:focus-visible,
+.typeOption:focus-visible,
+.btnGenerate:focus-visible,
+.btnCopy:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .orb,
+  .iconWrapper,
+  .generating span,
+  .tokenText {
+    animation: none;
+  }
+
+  .categoryTab,
+  .typeOption,
+  .btnGenerate,
+  .btnCopy {
+    transition: none;
+  }
+}
