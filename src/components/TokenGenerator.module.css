@@ -412,12 +412,21 @@
   }
 
   .buttons {
-    flex-direction: column;
+    flex-wrap: wrap;
   }
 
-  .btnGenerate,
+  .btnGenerate {
+    flex: 1 1 100%;
+    order: 1;
+  }
+
   .btnCopy {
-    width: 100%;
+    flex: 1;
+    order: 2;
+  }
+
+  .btnQR {
+    order: 3;
   }
 }
 
@@ -569,4 +578,193 @@
 .themeToggle svg {
   width: 20px;
   height: 20px;
+}
+
+/* QR Button */
+.btnQR {
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btnQR svg {
+  width: 18px;
+  height: 18px;
+}
+
+.btnQR:not(:disabled):hover {
+  background: rgba(168, 85, 247, 0.1);
+  border-color: var(--accent-purple);
+  color: var(--accent-purple);
+  transform: translateY(-2px);
+}
+
+.btnQR:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btnQR:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
+
+/* QR Code Modal */
+.qrOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 100;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.qrModal {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 320px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: scaleIn 0.3s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.qrClose {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: var(--bg-input);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.qrClose:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.qrClose:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
+
+.qrClose svg {
+  width: 16px;
+  height: 16px;
+}
+
+.qrTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+}
+
+.qrCode {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1rem;
+  display: inline-block;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.qrHint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.qrToken {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--accent-cyan);
+  word-break: break-all;
+  line-height: 1.4;
+  padding: 0.5rem;
+  background: var(--bg-input);
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  max-height: 60px;
+  overflow-y: auto;
+}
+
+/* QR Modal responsive */
+@media (max-width: 480px) {
+  .qrModal {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .qrTitle {
+    font-size: 1rem;
+  }
+
+  .qrCode {
+    padding: 0.75rem;
+  }
+
+  .qrHint {
+    font-size: 0.75rem;
+  }
+
+  .qrToken {
+    font-size: 0.65rem;
+  }
+
+  .btnQR {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Reduced motion for QR modal */
+@media (prefers-reduced-motion: reduce) {
+  .qrOverlay,
+  .qrModal {
+    animation: none;
+  }
+
+  .btnQR {
+    transition: none;
+  }
 }

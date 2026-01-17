@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
 import { TOKEN_TYPES, CATEGORIES, generateToken, TokenTypeId, CategoryId } from '@/lib/token';
 import { useTheme } from './ThemeProvider';
 import styles from './TokenGenerator.module.css';
@@ -13,6 +14,8 @@ export default function TokenGenerator() {
   const [selectedType, setSelectedType] = useState<TokenTypeId>('random-64');
   const [activeCategory, setActiveCategory] = useState<CategoryId>('all');
   const [copyError, setCopyError] = useState(false);
+  const [showQR, setShowQR] = useState(false);
+  const qrModalRef = useRef<HTMLDivElement>(null);
 
   const filteredTypes = activeCategory === 'all'
     ? TOKEN_TYPES
@@ -45,6 +48,12 @@ export default function TokenGenerator() {
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Escape to close QR modal
+      if (e.key === 'Escape' && showQR) {
+        setShowQR(false);
+        return;
+      }
+
       // Enter to generate (when not in input)
       if (e.key === 'Enter' && !e.ctrlKey && !e.metaKey) {
         const target = e.target as HTMLElement;
@@ -66,7 +75,21 @@ export default function TokenGenerator() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleGenerate, handleCopy, token]);
+  }, [handleGenerate, handleCopy, token, showQR]);
+
+  // Close QR modal on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (qrModalRef.current && !qrModalRef.current.contains(e.target as Node)) {
+        setShowQR(false);
+      }
+    };
+
+    if (showQR) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showQR]);
 
   const selectedTypeInfo = TOKEN_TYPES.find(t => t.id === selectedType);
 
@@ -209,12 +232,53 @@ export default function TokenGenerator() {
               </>
             )}
           </button>
+          <button
+            className={styles.btnQR}
+            onClick={() => setShowQR(true)}
+            disabled={!token}
+            aria-label="QR 코드 생성"
+          >
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+            </svg>
+            QR
+          </button>
         </div>
 
         {/* Screen reader only: keyboard shortcut hints */}
         <div className="sr-only" aria-live="polite">
           Enter 키로 토큰 생성, Ctrl+C로 복사
         </div>
+
+        {/* QR Code Modal */}
+        {showQR && token && (
+          <div className={styles.qrOverlay} role="dialog" aria-modal="true" aria-labelledby="qr-title">
+            <div className={styles.qrModal} ref={qrModalRef}>
+              <button
+                className={styles.qrClose}
+                onClick={() => setShowQR(false)}
+                aria-label="닫기 (ESC)"
+              >
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+              <h2 id="qr-title" className={styles.qrTitle}>QR 코드</h2>
+              <div className={styles.qrCode}>
+                <QRCodeSVG
+                  value={token}
+                  size={200}
+                  level="M"
+                  includeMargin={true}
+                  bgColor="#ffffff"
+                  fgColor="#000000"
+                />
+              </div>
+              <p className={styles.qrHint}>QR 코드를 스캔하여 토큰을 읽을 수 있습니다</p>
+              <code className={styles.qrToken}>{token}</code>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
